@@ -9,9 +9,9 @@ const emailReducer = (state, action) => {
     return {value: action.val, isValid: action.val.includes('@')};
   }
   if (action.type === 'INPUT_BLUR') {
-    return {value: state.value, isValid: state.value.includes('@')}
+    return {value: state.value, isValid: state.value.includes('@')};
   }
-  return {value: '', isValid: false}
+  return {value: '', isValid: false};
 };
 
 const passwordReducer = (state, action) => {
@@ -19,9 +19,9 @@ const passwordReducer = (state, action) => {
     return {value: action.val, isValid: action.val.trim().length > 6};
   }
   if (action.type === 'INPUT_BLUR') {
-    return {value: state.value, isValid: state.value.trim().length > 6}
+    return {value: state.value, isValid: state.value.trim().length > 6};
   }
-  return {value: '', isValid: false}
+  return {value: '', isValid: false};
 };
 
 const Login = (props) => {
@@ -48,26 +48,29 @@ const Login = (props) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const identifier = setTimeout(() => {
-  //     console.log("Checking form validity!");
-  //     setFormIsValid(
-  //       enteredEmail.includes("@") && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
+  const {isValid: emailIsValid} = emailState;
+  const {isValid: passwordIsValid} = passwordState;
 
-  //   return () => {
-  //     console.log('CLEANUP');
-  //     clearTimeout(identifier);
-  //   };
-  // }, [enteredEmail, enteredPassword]);
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log("Checking form validity!");
+      setFormIsValid(
+        emailIsValid && passwordIsValid
+      );
+    }, 500);
+
+    return () => {
+      console.log('CLEANUP');
+      clearTimeout(identifier);
+    };
+  }, [emailIsValid, passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     dispatchEmail({type: 'USER_INPUT', val: event.target.value});
 
-    setFormIsValid(
-      emailState.isValid && passwordState.isValid
-    );
+  //   setFormIsValid(
+  //     emailState.isValid && passwordState.isValid
+  //   );
   };
 
   const passwordChangeHandler = (event) => {
